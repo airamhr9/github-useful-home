@@ -46,7 +46,8 @@ async function getDashboard(prParam) {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, 'text/html');
     const prTable = doc.getElementById('issues_dashboard');
-    prTable.innerHTML = prTable.innerHTML + "<br/><br/>";
+    var br = document.createElement("br");
+    prTable.append(br);
 
     const navBar = doc.querySelectorAll('.subnav-item')
     if (navBar) {
