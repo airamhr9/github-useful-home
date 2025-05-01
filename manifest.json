@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub PRs in home page",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Adds the table in the pull requests page to the home page",
   "icons": {
     "48": "icons/icon48.png",
