@@ -15,6 +15,9 @@ async function observerCallback() {
 }
 
 addLocationObserver(observerCallback)
+if (!!window.chrome) {
+    observerCallback()
+}
 
 async function main() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -24,7 +27,7 @@ async function main() {
 }
 
 async function getDashboard(prParam) {
-    const dashboard = document.querySelector('.dashboard');
+    const dashboard = document.querySelector('feed-container');
     if (!dashboard) return;
     const currentPrTable = dashboard.querySelector('#issues_dashboard');
     if (currentPrTable) return;
@@ -43,6 +46,7 @@ async function getDashboard(prParam) {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, 'text/html');
     const prTable = doc.getElementById('issues_dashboard');
+    prTable.innerHTML = prTable.innerHTML + "<br/><br/>";
 
     const navBar = doc.querySelectorAll('.subnav-item')
     if (navBar) {
