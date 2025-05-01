@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "GitHub PR Feed Replacer",
+  "name": "GitHub PRs in home page",
   "version": "1.0",
-  "description": "Replaces GitHub's news feed with your pull requests table",
+  "description": "Adds the table in the pull requests page to the home page",
   "icons": {
     "48": "icons/icon48.png",
     "96": "icons/icon96.png",
@@ -20,7 +20,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "github-pr-feed-replacer@yourdomain.com"
+      "id": "github-pr-in-home-page"
     }
   }
 }
