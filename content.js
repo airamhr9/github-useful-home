@@ -1,0 +1,67 @@
+function addLocationObserver(callback) {
+    const config = { attributes: false, childList: true, subtree: false }
+    const observer = new MutationObserver(callback)
+    observer.observe(document.body, config)
+}
+
+function observerCallback() {
+    const location = window.location;
+    const currentPath = location.protocol + '//' + location.host + location.pathname
+    if (currentPath === 'https://github.com/' || 
+        currentPath === 'https://github.com') {
+        console.log("Replacing GitHub homepage with PRs")
+        main()
+    }
+}
+
+addLocationObserver(observerCallback)
+observerCallback()
+
+async function main() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const prParam = urlParams.get('prTable');
+
+    await getDashboard(prParam);
+}
+
+async function getDashboard(prParam) {
+    const dashboard = document.querySelector('.dashboard');
+    if (!dashboard) return;
+    dashboard.innerHTML = '';
+
+    let url = 'https://github.com/pulls';
+    if (prParam) {
+        switch (prParam) {
+            case 'assigned': url = 'https://github.com/pulls/assigned'; break;
+            case 'review-requested': url = 'https://github.com/pulls/review-requested'; break;
+            case 'mentioned': url = 'https://github.com/pulls/mentioned'; break;
+        }
+    }
+    const response = await fetch(url);
+    const html = await response.text();
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html');
+    const prTable = doc.getElementById('issues_dashboard');
+
+    const navBar = doc.querySelectorAll('.subnav-item')
+    if (navBar) {
+        navBar.forEach((item) => {
+            const link = item.getAttribute('data-selected-links')
+            let redirect = 'created';
+            if (link) {
+                if (link.includes('dashboard_assigned')) {
+                    redirect = 'assigned'
+                } else if (link.includes('dashboard_review_requested')) {
+                    redirect = 'review-requested'
+                } else if (link.includes('dashboard_mentioned')) {
+                    redirect = 'mentioned'
+                }
+
+                item.setAttribute('href', 'https://github.com?prTable=' + redirect);
+            }
+        })
+    }
+
+    dashboard.appendChild(prTable);
+}
