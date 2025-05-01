@@ -4,18 +4,17 @@ function addLocationObserver(callback) {
     observer.observe(document.body, config)
 }
 
-function observerCallback() {
+async function observerCallback() {
     const location = window.location;
     const currentPath = location.protocol + '//' + location.host + location.pathname
     if (currentPath === 'https://github.com/' || 
         currentPath === 'https://github.com') {
         console.log("Replacing GitHub homepage with PRs")
-        main()
+        await main()
     }
 }
 
 addLocationObserver(observerCallback)
-observerCallback()
 
 async function main() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,7 +26,8 @@ async function main() {
 async function getDashboard(prParam) {
     const dashboard = document.querySelector('.dashboard');
     if (!dashboard) return;
-    dashboard.innerHTML = '';
+    const currentPrTable = dashboard.querySelector('#issues_dashboard');
+    if (currentPrTable) return;
 
     let url = 'https://github.com/pulls';
     if (prParam) {
@@ -63,5 +63,5 @@ async function getDashboard(prParam) {
         })
     }
 
-    dashboard.appendChild(prTable);
+    dashboard.prepend(prTable);
 }
