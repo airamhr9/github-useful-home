@@ -29,8 +29,8 @@ async function main() {
 
 async function getDashboard(prParam) {
     const dashboard = window.location.pathname.includes('/orgs') 
-    ? document.querySelector('feed-container')
-    : document.querySelector('main');
+    ? document.querySelector('main')
+    : document.querySelector('feed-container');
     if (!dashboard) return;
     const currentPrTable = dashboard.querySelector('#issues_dashboard');
     if (currentPrTable) return;
