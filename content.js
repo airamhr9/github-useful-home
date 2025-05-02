@@ -8,8 +8,9 @@ async function observerCallback() {
     const location = window.location;
     const currentPath = location.protocol + '//' + location.host + location.pathname
     if (currentPath === 'https://github.com/' || 
-        currentPath === 'https://github.com') {
-        console.log("Replacing GitHub homepage with PRs")
+        currentPath === 'https://github.com' || 
+        (currentPath.includes("github.com/orgs") && currentPath.includes("/dashboard"))) {
+        console.log("Adding GitHub PR table")
         await main()
     }
 }
@@ -27,7 +28,9 @@ async function main() {
 }
 
 async function getDashboard(prParam) {
-    const dashboard = document.querySelector('feed-container');
+    const dashboard = window.location.pathname.includes('/orgs') 
+    ? document.querySelector('feed-container')
+    : document.querySelector('main');
     if (!dashboard) return;
     const currentPrTable = dashboard.querySelector('#issues_dashboard');
     if (currentPrTable) return;
