@@ -66,7 +66,7 @@ async function getDashboard(prParam) {
                     redirect = 'mentioned'
                 }
 
-                item.setAttribute('href', 'https://github.com?prTable=' + redirect);
+                item.setAttribute('href', 'https://github.com' + window.location.pathname + "?prTable=" + redirect);
             }
         })
     }
